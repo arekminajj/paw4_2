@@ -15,7 +15,17 @@ app.get('/math/circle/:r', (req, res) => {
   res.json(result);
 });
 
-//TODO2
+app.get('/math/rectangle/:w/:h', (req, res) => {
+  
+  const w = Number(req.params.w);
+  const h = Number(req.params.h);
+
+  const area = w * h;
+  const perimiter = 2 * w + 2 * h;
+
+  const result = {"area": area,"perimiter": perimiter}
+  res.json(result);
+});
 
 
 //TODO3
