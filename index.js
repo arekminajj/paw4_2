@@ -3,9 +3,15 @@
 const express = require('express');
 const app = express();
 
-// define endpoint for exercise 1 here
 app.get('/math/circle/:r', (req, res) => {
-//TODO1  
+  
+  const PI = 3.14
+  const r = Number(req.params.r);
+
+  const area = PI * r * r;
+  const circumference = 2 * PI * r;
+
+  const result = {"area": area,"circumference": circumference}
   res.json(result);
 });
 
