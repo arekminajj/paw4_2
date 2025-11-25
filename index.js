@@ -2,6 +2,7 @@
 
 const express = require("express");
 const app = express();
+app.use(express.json());
 const { categories, funnyJoke, lameJoke } = require("./jokes");
 
 app.get("/math/circle/:r", (req, res) => {
@@ -89,6 +90,33 @@ app.get("/jokebook/random", (req, res) => {
   const randomJoke = pickRandom(jokes);
   return res.json({ category, ...randomJoke });
 });
+
+app.post("/jokebook/joke/:category", (req, res) => {
+  const category = req.params.category;
+  const { joke, response } = req.body;
+
+  if (!joke || !response) {
+    return res.status(400).json({ error: "Both 'joke' and 'response' are required." });
+  }
+
+  let jokes;
+
+  if (category === "funnyJoke") {
+    jokes = funnyJoke;
+  } else if (category === "lameJoke") {
+    jokes = lameJoke;
+  } else {
+    return res.status(400).json({ error: `no jokes for category ${category}` });
+  }
+
+  jokes.push({ joke, response });
+
+  return res.json({
+    message: `Joke added to category ${category}`,
+    added: { joke, response }
+  });
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
